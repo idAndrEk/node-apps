@@ -1,0 +1,31 @@
+name: CI for Node Apps
+on:
+  push:
+    branches: [main]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - run: npm install
+        working-directory: ./blogs
+      - run: npm run build
+        working-directory: ./blogs
+      - run: npm install
+        working-directory: ./todo-app
+      - run: npm run build || true
+        working-directory: ./todo-app
+      - run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+      - run: docker-compose up -d
+        working-directory: ./blogs
+      - run: sleep 5 && curl --fail http://localhost:3000/blogs
+        working-directory: ./blogs
+      - run: docker-compose up -d
+        working-directory: ./todo-app
+      - run: sleep 5 && curl --fail http://localhost:3001/todos
+        working-directory: ./todo-app
