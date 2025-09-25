@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  app:
+    build: .  # Собирает образ из Dockerfile в текущей директории
+    ports:
+      - "3000:3000"  # Порт приложения
+    depends_on:
+      - mongodb  # Зависимость от сервиса MongoDB
+    environment:
+      - DB_HOST=mongodb  # Хост базы данных (имя сервиса)
+      - DB_PORT=27017  # Порт MongoDB
+      - DB_NAME=blogs  # Имя базы данных
+    volumes:
+      - .:/app  # Монтируем код приложения для разработки
+      - /app/node_modules  # Изолируем node_modules
+      - /app/dist  # Исключаем dist из монтирования
+    command: ["sh", "-c", "npx tsc && npm start"]  # Компилируем и запускаем
+
+  mongodb:
+    image: mongo:4.4  # Образ MongoDB
+    ports:
+      - "27017:27017"  # Порт MongoDB (для локального доступа, можно убрать в продакшене)
+    volumes:
+      - mongodb_data:/data/db  # Volume для хранения данных MongoDB
+
+volumes:
+  mongodb_data:
