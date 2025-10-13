@@ -6,5 +6,7 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
+        - name: Get code
+          run: action/checkout@v3
         - name: Placeholder
           run: echo "Hello, CI!"
