@@ -1,12 +1,18 @@
 name: Todo CI
 on:
-    push:
-        branches: [ main ]
+  push:
+    branches: [ main ]
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Get code
-          run: action/checkout@v3
-        - name: Byild Docker image
-          run: docker build -t todo-app:latest ./todo-app
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get code
+      uses: actions/checkout@v3
+    - name: Build Docker image
+      run: docker build -t todo-app:latest ./todo-app
+    - name: Test container
+      run: |
+        docker run -d -p 3000:3000 --name test-app todo-app:latest
+        sleep 5
+        curl http://localhost:3000/health | grep "OK"
+        docker stop test-app
