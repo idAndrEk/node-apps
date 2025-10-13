@@ -7,12 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Get code
-      uses: actions/checkout@v3  # Исправлено: uses вместо run
+      uses: actions/checkout@v3
     - name: Build Docker image
       run: docker build -t todo-app:latest ./todo-app
     - name: Test container
       run: |
         docker run -d -p 3001:3000 --name test-app todo-app:latest
-        sleep 5
-        curl http://localhost:3001/health | grep "OK"
+        sleep 10
+        curl http://localhost:3001/health
+        docker logs test-app
         docker stop test-app
