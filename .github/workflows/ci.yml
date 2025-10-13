@@ -16,7 +16,7 @@ jobs:
         docker run -d --name mongodb --network todo-network mongo:4.4
         docker run -d -p 3001:3000 --name test-app --network todo-network -e DB_HOST=mongodb todo-app:latest
         sleep 15
-        curl -v http://localhost:3001/health
+        curl -v http://localhost:3001/health | grep "todo-app OK"
         docker logs test-app
         docker logs mongodb
         docker stop test-app mongodb
