@@ -12,8 +12,12 @@ jobs:
       run: docker build -t todo-app:latest ./todo-app
     - name: Test container
       run: |
-        docker run -d -p 3001:3000 --name test-app todo-app:latest
-        sleep 10
-        curl http://localhost:3001/health
+        docker network create todo-network
+        docker run -d --name mongodb --network todo-network mongo:4.4
+        docker run -d -p 3001:3000 --name test-app --network todo-network -e DB_HOST=mongodb todo-app:latest
+        sleep 15
+        curl -v http://localhost:3001/health
         docker logs test-app
-        docker stop test-app
+        docker logs mongodb
+        docker stop test-app mongodb
+        docker network rm todo-network
