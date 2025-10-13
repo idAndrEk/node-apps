@@ -8,5 +8,5 @@ jobs:
         steps:
         - name: Get code
           run: action/checkout@v3
-        - name: Placeholder
-          run: echo "Hello, CI!"
+        - name: Byild Docker image
+          run: docker build -t todo-app:latest ./todo-app
