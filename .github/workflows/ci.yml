@@ -1,0 +1,10 @@
+name: Todo CI
+on:
+    push:
+        branches: [ main ]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Placeholder
+          run: echo "Hello, CI!"
