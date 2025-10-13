@@ -23,7 +23,7 @@ async function runDb() {
   }
 }
 
-app.get('/health', (req, res) => res.send('todo-app OK TEST'));
+app.get('/health', (req, res) => res.send('todo-app OK'));
 
 app.get('/todos', async (req, res) => {
   const todos = await db.collection('todos').find().toArray();
