@@ -1,0 +1,15 @@
+name: Blog CI
+run-name: Blog is testing out GitHub Actions
+on:
+    push:
+        branches: [ main ]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Get code
+          uses: actions/checkout@v3
+        - name: Echo_№1
+          run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+        - name: Build Docker image
+          run: docker build -t blog-app:latest ./blog-app
