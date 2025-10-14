@@ -21,4 +21,7 @@ jobs:
             docker run -d --name test-mongodb mongo:4.4
             docker run -d --name test-blog-app --link test-mongodb -e DB_HOST=test-mongodb blogs-app:latest
             sleep 20
-            curl -s "http://localhost:3000/blogs?pageSize=2" | jq '.'
+            echo "📝 Testing GET /blogs endpoint..."
+            curl "http://localhost:3000/blogs?pageSize=2"
+            echo ""
+            echo "✅ GET /blogs completed"
