@@ -16,3 +16,9 @@ jobs:
           run: ls -la
         - name: Build Docker image
           run: docker build -t blogs-app:latest ./blogs 
+        - name: Test container
+          run: |
+            docker run -d --name test-mongodb mongo:4.4
+            docker run -d --name test-blog-app --link test-mongodb -e DB_HOST=test-mongodb blogs-app:latest
+            sleep 20
+            curl -s "http://localhost:3000/blogs?pageSize=2" | jq '.'
